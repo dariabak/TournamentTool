@@ -8,7 +8,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-		<script defer src="<?php echo base_url();?>javascript/customscript.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
@@ -20,8 +19,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </nav>
 <center>
 
-<img src="<?php echo base_url();?>projectimages/tournamentsoftware.png"  alt "" style width="1020px" height="250px">
-
 <div class="container">
 <h1>Create a schedule</h1>
 <form action="" autocomplete="off">
@@ -32,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<option value='basketball'>Basketball</option>
 </select>
 <label for='numberOfTeams'>Choose number of teams</label>
-<select name='numberOfTeams' class="custom-select">
+<select id='numberOfTeams' class="custom-select">
 <!-- Create 50 options -->
 <?php
     for ($i=1; $i<=50; $i++)
@@ -44,22 +41,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 </select>
 <label for='typeOfSchedule'>Choose type of schedule</label>
-<select names='typeOfSchedule' class="custom-select">
+<select id='typeOfSchedule' class="custom-select">
 	<option value='leagueRoundRobin'>League Round Robin</option>
 	<option value='tournamentSingleElimination'>Tournament Single Elimination</option>
 	<option value='tournamentDoubleElimination'>Tournament Double Elimination</option>
 </select>
 <label for='teamsNames'>Do you want enter teams names?</label>
-<input type="checkbox" name='teamsNames' data-toggle="collapse" data-target="#insertteamname">
-<div id="insertteamname" class="collapse">
-		  <div class="form-group">
-		    <label for="Team1"><h2>Team 1</h2></label>
-		    <input type="text"  name="team1" class="form-control" id="Team1" required minlength="4" maxlength="25">
-		  </div>
-			<div class="form-group">
-		    <label for="Team2"><h2>Team 2</h2></label>
-		    <input type="text" name="team2" class="form-control" id="Team2" required minlength="4" maxlength="25">
-		  </div>
+<input type="checkbox" id='teamsNames' data-toggle="collapse" data-target="#insertteamname">
+<div id="insertteamname" class="collapse">	 
 </div>
 </div>
 <button type="submit" class="btn btn-outline-info"><h1>Submit</h1></button>
@@ -69,4 +58,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 </center>
 </body>
+<script>
+$(document).ready(function()
+{
+	$("#teamsNames").change(function()
+	{
+		if($("#teamsNames").is(':checked')){
+			var numberOfTeams = $("#numberOfTeams").val();
+			for(var i = 1; i <= numberOfTeams; i++){
+				$("#insertteamname").append("<div class='form-group'><label for='Team" + i + "'><h2>Team" + i+ "</h2></label><input type='text' name='team" + i + "' class='form-control' required minlength='4' maxlength='25'>");
+			}
+			
+		} else {
+			$("#insertteamname").empty();
+		}
+	});
+});
+</script>
 </html>
