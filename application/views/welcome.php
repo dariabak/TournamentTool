@@ -24,9 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <form action="" autocomplete="off">
 <label for='discipline'>Choose discipline</label>
 <select name='discipline' class="custom-select">
-	<option value='volleyball'>Volleyball</option>
-	<option value='football'>Football</option>
-	<option value='basketball'>Basketball</option>
+	<option value='league of legends'>League of Legends</option>
+	<option value='valorant'>Valorant</option>
+	<option value='destiny 2'>Destiny 2</option>
 </select>
 <label for='numberOfTeams'>Choose number of teams</label>
 <select id='numberOfTeams' class="custom-select">
