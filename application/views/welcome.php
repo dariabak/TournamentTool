@@ -8,6 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	  <script defer src="javascript/jquery.session.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
@@ -21,12 +22,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="container">
 <h1>Create a schedule</h1>
-<form action="" autocomplete="off">
+<form action='<?php echo base_url("create_schedule")?>' autocomplete="off" method='post'>
 <label for='discipline'>Choose discipline</label>
 <select name='discipline' class="custom-select">
-	<option value='league of legends'>League of Legends</option>
+<option value='league of legends'>League of Legends</option>
 	<option value='valorant'>Valorant</option>
 	<option value='destiny 2'>Destiny 2</option>
+
 </select>
 <label for='numberOfTeams'>Choose number of teams</label>
 <select id='numberOfTeams' class="custom-select">
@@ -59,17 +61,65 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </center>
 </body>
 <script>
+
 $(document).ready(function()
-{
+{	
+	var numberOfTeams = $("#numberOfTeams").val();
+	//checks if teamsNames checkbox changes
 	$("#teamsNames").change(function()
-	{
+	{   //set chosen number of teams
+		numberOfTeams = $("#numberOfTeams").val();
+		//if chechbox changed, check if it is ticked
 		if($("#teamsNames").is(':checked')){
-			var numberOfTeams = $("#numberOfTeams").val();
+
+			//create as many team's inputs as was chosen
 			for(var i = 1; i <= numberOfTeams; i++){
-				$("#insertteamname").append("<div class='form-group'><label for='Team" + i + "'><h2>Team" + i+ "</h2></label><input type='text' name='team" + i + "' class='form-control' required minlength='4' maxlength='25'>");
+				//insert into insertteamname's div label and input
+				$("#insertteamname").append("<div class='form-group'><label for='team" + i + "'>Team" + i+ 
+				"</label><input type='text' id='team" + i + "' class='form-control' required minlength='4' maxlength='25'>");
+
+				//change team name value if it exists in session
+				if(typeof($.session.get("team" + i)) != "undefined" && $.session.get("team" + i) != null){
+					$("#team" + i).val($.session.get("team" + i));
+				}
 			}
-			
 		} else {
+			//set each team name in session
+			for(var j = 1; j <= numberOfTeams; j++){
+				$.session.set("team" + j, $("#team" + j).val());
+			}
+			//if checkbox is unticked, then delete all children of insertteamname's div
+			$("#insertteamname").empty();
+		}
+	});
+	//checks if numberOfTeams drop down list changes
+	$("#numberOfTeams").change(function(){
+		//if chechbox changed, check if it is ticked
+		if($("#teamsNames").is(':checked')){
+			for(var j = 1; j <= numberOfTeams; j++){
+				$.session.set("team" + j, $("#team" + j).val());
+			}
+			//if checkbox is already ticked delete all children of insertteamname's div
+			$("#insertteamname").empty();
+			//set chosen number of teams
+			numberOfTeams = $("#numberOfTeams").val();
+			//create as many team's inputs as was chosen
+			for(var i = 1; i <= numberOfTeams; i++){
+				//insert into insertteamname's div label and input
+				$("#insertteamname").append("<div class='form-group'><label for='team" + i + "'>Team" + i+ 
+				"</label><input type='text' id='team" + i + "' class='form-control' required minlength='4' maxlength='25'>");
+
+				//change team name value if it exists in session
+				if(typeof($.session.get("team" + i)) != "undefined" && $.session.get("team" + i) != null){
+					$("#team" + i).val($.session.get("team" + i));
+				}
+			}
+		} else {
+			//set each team name in session
+			for(var j = 1; j <= numberOfTeams; j++){
+					$.session.set("team" + j, $("#team" + j).val());
+			}
+			//if checkbox is unticked, then delete all children of insertteamname's div
 			$("#insertteamname").empty();
 		}
 	});
