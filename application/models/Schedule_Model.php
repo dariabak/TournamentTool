@@ -30,7 +30,7 @@ class Schedule_Model extends CI_Model{
                 unset($teams[$random_teams[0]]);
                 unset($teams[$random_teams[1]]);
             }
-           
+      
                 break;
 
             case 'tournamentDoubleElimination':
