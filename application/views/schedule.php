@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <nav class="navbar navbar-light bg-light">
   <!-- Navbar content -->
   <a class="navbar-brand" href="#">
-    <img src="logo.png" width="60" height="50" alt="">
+    <img src="logo.png" width="60" height="40" alt="">
 	Tournament Organisation
   </a>
 </nav>

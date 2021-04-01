@@ -12,12 +12,10 @@ class Schedule_Controller extends CI_Controller {
 	public function index()
 	{  
 		foreach($this->input->post() as $key => $value){
-			$scheduleData[$key] = $value;      
-			if($value == ""){
-				$scheduleData[$key] = $key;
-			}      
+			     
+			$scheduleData[$key] = $value; 
 		}
-
+		
 		$data['schedule'] = $this->Schedule_Model->createSchedule($scheduleData);
 		$this->load->view('schedule', $data);
 	}
