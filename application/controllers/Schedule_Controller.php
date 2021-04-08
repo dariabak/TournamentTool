@@ -17,6 +17,7 @@ class Schedule_Controller extends CI_Controller {
 		}
 		
 		$data['schedule'] = $this->Schedule_Model->createSchedule($scheduleData);
+
 		$this->load->view('schedule', $data);
 	}
 

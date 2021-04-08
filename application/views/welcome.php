@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +35,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <select id='numberOfTeams' name='numberOfTeams' class="custom-select">
 <!-- Create 50 options -->
 <?php
-    for ($i=2; $i<50; $i+=2)
+    for ($i=2; $i<50; $i++)
     {
         ?>
             <option value="<?php echo $i;?>"><?php echo $i;?></option>

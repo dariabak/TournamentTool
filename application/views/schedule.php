@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,5 +20,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	Tournament Organisation
   </a>
 </nav>
+
+<div id='container'>
+<h3>Your schedule</h3>
+	<div id='schedule'>
+	<table class='table'>
+	<thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Team 1</th>
+			<th scope="col"></th>
+            <th scope="col">Team 2</th>
+            </tr>
+        </thead>
+	<tbody>
+	<?php
+	foreach($schedule as $match){
+		echo '<tr class="result"><td>' . $match->get_matchId(). '</td><td>' . $match->get_team1() . '</td><td>vs</td><td>' . $match->get_team2(). '<//td></tr>';
+	}
+	?>
+	</tbody>
+	</table>
+	</div>
+</div>
 
 </html>

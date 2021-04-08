@@ -23,27 +23,78 @@ class Schedule_Model extends CI_Model{
                 break;
 
             case 'tournamentSingleElimination':
-                
-            while(count($teams) != 0){
-                $random_teams = array_rand($teams,2);
-                $array[$teams[$random_teams[0]]] = $teams[$random_teams[1]];
-                unset($teams[$random_teams[0]]);
-                unset($teams[$random_teams[1]]);
-            }
-      
+                $id = 1;
+                while(count($teams) != 0){
+                    
+                    $match = new Match();
+                    if(count($teams) != 1){
+                        $random_teams = array_rand($teams,2);
+                        $match->set_teams($teams[$random_teams[0]], $teams[$random_teams[1]]);
+                        $match->set_matchId($id);
+                        array_push($array, $match);
+                        unset($teams[$random_teams[0]]);
+                        unset($teams[$random_teams[1]]);
+                    } else {
+                        $random_teams = array_rand($teams,1);
+                        $team = "";
+                        $match->set_teams($teams[$random_teams], $team);
+                        $match->set_matchId($id);
+                        array_push($array, $match);
+                        unset($teams[$random_teams]);
+                    }
+                    $id += 1;
+                }
                 break;
 
             case 'tournamentDoubleElimination':
+                $id = 1;
                 while(count($teams) != 0){
-                    $random_teams = array_rand($teams,2);
-                    $array[$teams[$random_teams[0]]] = $teams[$random_teams[1]];
-                    unset($teams[$random_teams[0]]);
-                    unset($teams[$random_teams[1]]);
+                    
+                    $match = new Match();
+                    if(count($teams) != 1){
+                        $random_teams = array_rand($teams,2);
+                        $match->set_teams($teams[$random_teams[0]], $teams[$random_teams[1]]);
+                        $match->set_matchId($id);
+                        array_push($array, $match);
+                        unset($teams[$random_teams[0]]);
+                        unset($teams[$random_teams[1]]);
+                    } else {
+                        $random_teams = array_rand($teams,1);
+                        $team = "";
+                        $match->set_teams($teams[$random_teams], $team);
+                        $match->set_matchId($id);
+                        array_push($array, $match);
+                        unset($teams[$random_teams]);
+                    }
+                    $id += 1;
                 }
                 break;
         }
 
-        var_dump($array);
+    
         return $array;
+    }
+}
+
+class Match{
+    public $team1;
+    public $team2;
+    public $matchId;
+
+    public function set_teams($team1, $team2) {
+        $this->team1 = $team1;
+        $this->team2 = $team2;
+      }
+    public function set_matchID($id){
+        $this->matchId = $id;
+    }
+    public function get_team1(){
+        return $this->team1;
+    }
+    public function get_team2(){
+        return $this->team2;
+    }
+    public function get_matchId(){
+        return $this->matchId;
     }
 }
