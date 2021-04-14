@@ -22,7 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </nav>
 
 <div id='container'>
-<h3>Your schedule</h3>
+<h3>List of matches</h3>
 	<div id='schedule'>
 	<table class='table'>
 	<thead class="thead-light">
@@ -37,10 +37,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<?php
 	foreach($schedule as $match){
 		echo '<tr class="result"><td>' . $match->get_matchId(). '</td><td>' . $match->get_team1() . '</td><td>vs</td><td>' . $match->get_team2(). '<//td></tr>';
+
 	}
+	
 	?>
 	</tbody>
-	</table>
+	</table>   
 	</div>
 </div>
 
