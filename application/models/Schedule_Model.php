@@ -3,8 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Schedule_Model extends CI_Model{
     public function createSchedule($data){
-        $array = array();
+        $matches = array();
+        $matchesData = array();
         $teams = array();
+        $matchesData['type'] = $data['typeOfSchedule'];
         
         for($i = 1; $i <= $data['numberOfTeams']; $i++){
             if(isset($data['team' . $i])){
@@ -43,7 +45,6 @@ class Schedule_Model extends CI_Model{
                     }
                 } else if($numberOfTeams % 4 == 0){
                     $numberOfGroups = $numberOfTeams / 4;
-                    var_dump($numberOfGroups);
                     for($i = 0; $i < $numberOfGroups; $i++){
                         $group = new Group();
                         $random_teams = array_rand($teams,4);
@@ -65,7 +66,6 @@ class Schedule_Model extends CI_Model{
                         for($j = 0; $j < $y; $j++){
                             unset($teams[$random_teams[$j]]);
                         }
-                       
                         array_push($groups, $group);
                     }
 
@@ -74,24 +74,35 @@ class Schedule_Model extends CI_Model{
              
                         $groups[$random_group]->set_additional_team(current($teams));
                     }
-                    
 
                 }
-               
-               // $data = array();
-                //$data['groups'] = $groups;
-                //foreach($groups as $group){
-                 //  $x = count($group)*(count($group) - 1)/2;
-                  //   for($i = 0; $i < $x; $i++){
-                  //     $match = new Match();
-                  //      $random_teams = array_rand($group,2);
-                   //     if($group[$random_teams[0]] != $group[$random_teams[1]]){
+              
+                $matchesData['groups'] = $groups;
+                $id = 1;
 
-                   //     }
-                   //   var_dump($x);
-
-                   // }
-                    //    }
+                foreach($groups as $group){
+                    $teamsInGroup = $group->get_teams();
+                    $group->set_groupId($id);
+                    $teamsPairs = array();
+                    foreach($teamsInGroup as $key=>$team){
+                        for($i = 0; $i < count($teamsInGroup); $i++){
+                            $x = $i + 1;
+                            $str = $teamsInGroup['team'.$x] . $team;
+                            $str2 = $team . $teamsInGroup['team'.$x];
+                            if('team'.$x != $key && !in_array($str, $teamsPairs) && !in_array($str2, $teamsPairs)){
+                                $match = new Match();
+                                array_push($teamsPairs, $teamsInGroup['team'.$x] . $team);
+                                $match->set_teams($teamsInGroup['team'.$x], $team);
+                                array_push($matches, $match);
+                               
+                            }
+                        }
+                    }
+                    
+                    $matchesData['group'.$id.'Matches'] = $matches;
+                    $id+=1;
+                }
+           
                 break;
 
             case 'tournamentSingleElimination':
@@ -101,7 +112,6 @@ class Schedule_Model extends CI_Model{
                 
                 if(pow(2, $x) == $numberOfTeams){
                     $fullMatches = $numberOfTeams/2;
-                    var_dump($fullMatches);
                 } else {
                     $fullMatches = $numberOfTeams - pow(2, $x);
                 }
@@ -110,7 +120,7 @@ class Schedule_Model extends CI_Model{
                     $match = new Match();
                     $random_teams = array_rand($teams,2);
                     $match->set_teams($teams[$random_teams[0]], $teams[$random_teams[1]]);
-                    array_push($array, $match);
+                    array_push($matches, $match);
                     unset($teams[$random_teams[0]]);
                     unset($teams[$random_teams[1]]);
                 }
@@ -122,39 +132,41 @@ class Schedule_Model extends CI_Model{
                     $random_teams = array_rand($teams,1);
                     $team = "";
                     $match->set_teams($teams[$random_teams], $team);
-                    array_push($array, $match);
+                    array_push($matches, $match);
                     unset($teams[$random_teams]);
                 }
 
-                shuffle($array);
+                shuffle($matches);
                 $id = 1;
-                foreach($array as $match){
+                foreach($matches as $match){
                     $match->set_matchId($id);
                     $id += 1;
                 }
       
                $t = 0;
                 
-                while($t != count($array) - 1){
-                    $matches = array();
+                while($t != count($matches) - 1){
+                    $matches2 = array();
                  
-                    for($i = $t; $i < count($array) - 1; $i+=2){
+                    for($i = $t; $i < count($matches) - 1; $i+=2){
                     
                         $singleMatch= new Match();
-                        $singleMatch->set_teams("Winner of " .$array[$i]->get_matchId(), "Winner of " .$array[$i+1]->get_matchId());
-                        $singleMatch->set_matchId(count($array)+count($matches)+1);
-                        array_push($matches, $singleMatch);
-                         
-                            
+                        $singleMatch->set_teams("Winner of " .$matches[$i]->get_matchId(), "Winner of " .$matches[$i+1]->get_matchId());
+                        $singleMatch->set_matchId(count($matches2)+count($matches)+1);
+                        array_push($matches2, $singleMatch);
+                
                     }
                 
-                    $t = count($array);
-                    $array = array_merge($array, $matches);
+                    $t = count($matches);
+                    $matches = array_merge($matches, $matches2);
                 }
+                
+                $matchesData['matches'] = $matches;
+              
                 break;
 
         }
-        return $array;
+        return $matchesData;
     }
 }
 
@@ -197,6 +209,13 @@ class Group{
         $this->groupId = $id;
     }
     public function set_additional_team($team){
-        array_push($this->teams, $team);
+        $i = count($this->teams) + 1;
+        $this->teams['team'.$i] = $team;
+    }
+    public function get_teams(){
+        return $this->teams;
+    }
+    public function get_groupId(){
+        return $this->groupId;
     }
 }
