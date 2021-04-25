@@ -31,6 +31,10 @@ class Schedule_Model extends CI_Model{
                         $random_teams = array_rand($teams,6);
                         $group->set_teams($teams, $random_teams);
                         $group->set_groupId($i+1);
+                        $y = count($random_teams);
+                        for($j = 0; $j < $y; $j++){
+                            unset($teams[$random_teams[$j]]);
+                        }
                         array_push($groups, $group);
                        
                     }
@@ -41,6 +45,10 @@ class Schedule_Model extends CI_Model{
                         $random_teams = array_rand($teams,5);
                         $group->set_teams($teams, $random_teams);
                         $group->set_groupId($i+1);
+                        $y = count($random_teams);
+                        for($j = 0; $j < $y; $j++){
+                            unset($teams[$random_teams[$j]]);
+                        }
                         array_push($groups, $group);
                     }
                 } else if($numberOfTeams % 4 == 0){
@@ -50,6 +58,10 @@ class Schedule_Model extends CI_Model{
                         $random_teams = array_rand($teams,4);
                         $group->set_teams($teams, $random_teams);
                         $group->set_groupId($i+1);
+                        $y = count($random_teams);
+                        for($j = 0; $j < $y; $j++){
+                            unset($teams[$random_teams[$j]]);
+                        }
                         array_push($groups, $group);
                     }
                     
@@ -71,7 +83,6 @@ class Schedule_Model extends CI_Model{
 
                     if(count($teams) != 0){
                         $random_group = array_rand($groups, 1);
-             
                         $groups[$random_group]->set_additional_team(current($teams));
                     }
 
@@ -93,13 +104,13 @@ class Schedule_Model extends CI_Model{
                                 $match = new Match();
                                 array_push($teamsPairs, $teamsInGroup['team'.$x] . $team);
                                 $match->set_teams($teamsInGroup['team'.$x], $team);
-                                array_push($matches, $match);
-                               
+                                array_push($matches, $match);  
                             }
                         }
                     }
-                    
+                    shuffle($matches);
                     $matchesData['group'.$id.'Matches'] = $matches;
+                    $matches = array();
                     $id+=1;
                 }
            

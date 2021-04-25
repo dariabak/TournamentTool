@@ -27,13 +27,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	if($schedule['type'] == 'tournamentSingleElimination'){
 		echo'<h3>List of matches</h3><div id="schedule"><table class="table"><thead class="thead-light"><tr><th scope="col">#</th><th scope="col">Team 1</th><th scope="col"></th><th scope="col">Team 2</th></tr></thead><tbody>';
 		foreach($schedule['matches'] as $match){
-			echo '<tr class="result"><td>' . $match->get_matchId(). '</td><td>' . $match->get_team1() . '</td><td>vs</td><td>' . $match->get_team2(). '<//td></tr>';
+			echo '<tr class="result"><td>' . $match->get_matchId(). '</td><td>' . $match->get_team1() . '</td><td>vs</td><td>' . $match->get_team2(). '</td></tr>';
 			
 		}
 		echo '</tbody></table></div>';
 	} else {
 		echo'<div class="row">';
 		foreach($schedule['groups'] as $group){
+
 			echo'<div class="col-md-6"><h4>Group '.$group->get_groupId().'</h4>';
 			echo '<table class="table table-striped"><thead class="thead-light"><tr><th scope="col">#</th><th scope="col">Team</th></tr></thead><tbody>';
 			$i = 1;
@@ -45,6 +46,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			echo '</tbody></table></div>';
 		}
 		echo'</div>';
+		echo'<div class="row">';
+		foreach($schedule['groups'] as $group){
+			echo '<div class="col-md-6"><h4>Match for group '.$group->get_groupId().'</h4>';
+			echo '<table class="table table-striped"><thead class="thead-light"><tr><th scope="col">#</th><th scope="col">Team 1</th><th scope="col"></th><th scope="col">Team 2</th></tr></thead><tbody>';
+			$i = 1;
+			foreach($schedule['group'.$group->get_groupId().'Matches'] as $match){
+				echo '<tr class="result"><td>' . $i . '</td><td>' . $match->get_team1() . '</td><td>vs</td><td>' . $match->get_team2() . '</td></tr>';
+				$i += 1;
+			}
+			echo '</tbody></table></div>';
+		}
+		echo '</div>';
 	}
 	?>
 
