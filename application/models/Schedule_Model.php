@@ -219,7 +219,7 @@ class Schedule_Model extends CI_Model{
                 
                $t = 0;
                $matchesData['winnerMatches'] = array();
-               $x = 1;
+
                 while($t != count($matches) - 1){
                     $matches2 = array();
                  
@@ -227,20 +227,18 @@ class Schedule_Model extends CI_Model{
                     
                         $singleMatch= new Match();
                         $singleMatch->set_teams("Winner of " .$matches[$i]->get_matchId(), "Winner of " .$matches[$i+1]->get_matchId());
-                        $singleMatch->set_matchId($x);
+                        $singleMatch->set_matchId(count($matches2)+count($matches)+1);
                         array_push($matches2, $singleMatch);
                         array_push($matchesData['winnerMatches'], $singleMatch);
-                        $x += 1;
+                
                     }
-                    
+                 
                     $t = count($matches);
-                   
                     $matches = array_merge($matches, $matches2);
                 }
                 
                 $matches = $matchesData['matches'];   
-                $matchesData['loserMatches'] = array();     
-                $x = 1;                                                                    ;
+                $matchesData['loserMatches'] = array();                                                                         ;
                 $t = 0;
                 while($t != count($matches) - 1){
                     $matches2 = array();
@@ -249,14 +247,13 @@ class Schedule_Model extends CI_Model{
                     
                         $singleMatch= new Match();
                         $singleMatch->set_teams("Loser of " .$matches[$i]->get_matchId(), "Loser of " .$matches[$i+1]->get_matchId());
-                        $singleMatch->set_matchId($x);
+                        $singleMatch->set_matchId(count($matches2)+count($matches)+1);
                         array_push($matches2, $singleMatch);
                         array_push($matchesData['loserMatches'], $singleMatch);
-                        $x += 1;
+                
                     }
     
                     $t = count($matches);
-                    
                     $matches = array_merge($matches, $matches2);
                 }
 
