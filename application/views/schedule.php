@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			
 		}
 		echo '</tbody></table></div>';
-	} else {
+	} else if($schedule['type'] == 'leagueRoundRobin'){
 		echo'<div class="row">';
 		foreach($schedule['groups'] as $group){
 
@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		echo'</div>';
 		echo'<div class="row">';
 		foreach($schedule['groups'] as $group){
-			echo '<div class="col-md-6"><h4>Match for group '.$group->get_groupId().'</h4>';
+			echo '<div class="col-md-6"><h4>Matches for group '.$group->get_groupId().'</h4>';
 			echo '<table class="table table-striped"><thead class="thead-light"><tr><th scope="col">#</th><th scope="col">Team 1</th><th scope="col"></th><th scope="col">Team 2</th></tr></thead><tbody>';
 			$i = 1;
 			foreach($schedule['group'.$group->get_groupId().'Matches'] as $match){
@@ -58,6 +58,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			echo '</tbody></table></div>';
 		}
 		echo '</div>';
+	} else {
+		echo'<h3>List of matches</h3><table class="table table-striped"><thead class="thead-light"><tr><th scope="col">#</th><th scope="col">Team 1</th><th scope="col"></th><th scope="col">Team 2</th></tr></thead><tbody>';
+		foreach($schedule['matches'] as $match){
+			echo '<tr class="result"><td>' . $match->get_matchId(). '</td><td>' . $match->get_team1() . '</td><td>vs</td><td>' . $match->get_team2(). '</td></tr>';
+			
+		}
+		echo '</tbody></table><div class="row"><div class="col-md-6"><h4>Winners matches</h4><table class="table table-striped"><thead class="thead-light"><tr><th scope="col">#</th><th scope="col">Team 1</th><th scope="col"></th><th scope="col">Team 2</th></tr></thead><tbody>';
+	
+		foreach($schedule['winnerMatches'] as $match){
+			echo '<tr class="result"><td>' . $match->get_matchId(). '</td><td>' . $match->get_team1() . '</td><td>vs</td><td>' . $match->get_team2(). '</td></tr>';
+		}
+
+		echo '</tbody></table></div><div class="col-md-6"><h4>Losers matches</h4><table class="table table-striped"><thead class="thead-light"><tr><th scope="col">#</th><th scope="col">Team 1</th><th scope="col"></th><th scope="col">Team 2</th></tr></thead><tbody>';
+		foreach($schedule['loserMatches'] as $match){
+			echo '<tr class="result"><td>' . $match->get_matchId(). '</td><td>' . $match->get_team1() . '</td><td>vs</td><td>' . $match->get_team2(). '</td></tr>';
+		}
+		echo '</tbody></table></div></div>';
 	}
 	?>
 

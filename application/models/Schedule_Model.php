@@ -176,6 +176,92 @@ class Schedule_Model extends CI_Model{
               
                 break;
 
+            case 'tournamentDoubleElimination':
+
+                $id = 1;
+                $numberOfTeams= count($teams);
+                $x = floor(log(count($teams), 2));
+                
+                if(pow(2, $x) == $numberOfTeams){
+                    $fullMatches = $numberOfTeams/2;
+                } else {
+                    $fullMatches = $numberOfTeams - pow(2, $x);
+                }
+                   
+                for($i = 0; $i < $fullMatches; $i++){
+                    $match = new Match();
+                    $random_teams = array_rand($teams,2);
+                    $match->set_teams($teams[$random_teams[0]], $teams[$random_teams[1]]);
+                    array_push($matches, $match);
+                    unset($teams[$random_teams[0]]);
+                    unset($teams[$random_teams[1]]);
+                }
+
+                $emptyMatches = $numberOfTeams - 2 * $fullMatches;
+              
+                for($j = 0; $j < $emptyMatches; $j++){
+                    $match = new Match();
+                    $random_teams = array_rand($teams,1);
+                    $team = "";
+                    $match->set_teams($teams[$random_teams], $team);
+                    array_push($matches, $match);
+                    unset($teams[$random_teams]);
+                }
+
+                shuffle($matches);
+                $id = 1;
+                foreach($matches as $match){
+                    $match->set_matchId($id);
+                    $id += 1;
+                }
+
+               $matchesData['matches'] = $matches;
+                
+               $t = 0;
+               $matchesData['winnerMatches'] = array();
+               $x = 1;
+                while($t != count($matches) - 1){
+                    $matches2 = array();
+                 
+                    for($i = $t; $i < count($matches) - 1; $i+=2){
+                    
+                        $singleMatch= new Match();
+                        $singleMatch->set_teams("Winner of " .$matches[$i]->get_matchId(), "Winner of " .$matches[$i+1]->get_matchId());
+                        $singleMatch->set_matchId($x);
+                        array_push($matches2, $singleMatch);
+                        array_push($matchesData['winnerMatches'], $singleMatch);
+                        $x += 1;
+                    }
+                    
+                    $t = count($matches);
+                   
+                    $matches = array_merge($matches, $matches2);
+                }
+                
+                $matches = $matchesData['matches'];   
+                $matchesData['loserMatches'] = array();     
+                $x = 1;                                                                    ;
+                $t = 0;
+                while($t != count($matches) - 1){
+                    $matches2 = array();
+                 
+                    for($i = $t; $i < count($matches) - 1; $i+=2){
+                    
+                        $singleMatch= new Match();
+                        $singleMatch->set_teams("Loser of " .$matches[$i]->get_matchId(), "Loser of " .$matches[$i+1]->get_matchId());
+                        $singleMatch->set_matchId($x);
+                        array_push($matches2, $singleMatch);
+                        array_push($matchesData['loserMatches'], $singleMatch);
+                        $x += 1;
+                    }
+    
+                    $t = count($matches);
+                    
+                    $matches = array_merge($matches, $matches2);
+                }
+
+                break;
+
         }
         return $matchesData;
     }
