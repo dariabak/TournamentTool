@@ -7,7 +7,7 @@ class Schedule_Controller extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Schedule_Model');
-			$this->load->helper('url');
+		$this->load->helper('url');
 	}
 	public function index()
 	{  

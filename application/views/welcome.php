@@ -10,12 +10,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	  <script defer src="javascript/jquery.session.js"></script>
+	  <title>Tournament Organisation Tool</title>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
-  <!-- Navbar content -->
   <a class="navbar-brand" href="#">
-    <img src="logo.png" width="60" height="40" alt="">
+    <img src="<?php echo base_url('images/logo.png'); ?>" width="60" height="40" alt="logo">
 	Tournament Organisation
   </a>
 </nav>
@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="container">
 <h1>Create a schedule</h1>
-<form action='<?php echo base_url("create_schedule")?>' autocomplete="off" method='post'>
+<form action='<?php echo base_url("index.php/create_schedule")?>' autocomplete="off" method='post'>
 <label for='discipline'>Choose discipline</label>
 <select name='discipline' class="custom-select">
 <option value='league of legends'>League of Legends</option>

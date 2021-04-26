@@ -11,16 +11,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	  <script defer src="javascript/jquery.session.js"></script>
+	  <title>Tournament Organisation Tool</title>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
-  <!-- Navbar content -->
   <a class="navbar-brand" href="#">
-    <img src="logo.png" width="60" height="40" alt="">
+    <img src="<?php echo base_url('images/logo.png'); ?>" width="60" height="40" alt="logo">
 	Tournament Organisation
   </a>
 </nav>
-
+<center>
 <div id='container'>
 
 	<?php
@@ -79,5 +79,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	?>
 
 </div>
-
+</center>
 </html>
