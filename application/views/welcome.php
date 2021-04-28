@@ -9,13 +9,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	  <script defer src="javascript/jquery.session.js"></script>
+	  <script defer src="/organisation/javascript/jquery.session.js"></script>
 	  <title>Tournament Organisation Tool</title>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand" href="#">
-    <img src="<?php echo base_url('images/logo.png'); ?>" width="60" height="40" alt="logo">
+    <img src="/organisation/logo.png" width="60" height="40" alt="logo">
 	Tournament Organisation
   </a>
 </nav>
@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <div class="container">
 <h1>Create a schedule</h1>
-<form action='<?php echo base_url("index.php/create_schedule")?>' autocomplete="off" method='post'>
+<form action="/organisation/index.php/create_schedule" autocomplete="off" method='post'>
 <label for='discipline'>Choose discipline</label>
 <select name='discipline' class="custom-select">
 <option value='league of legends'>League of Legends</option>
@@ -53,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <input type="checkbox" id='teamsNames' data-toggle="collapse" data-target="#insertteamname">
 <div id="insertteamname" class="collapse">	 
 </div><br>
-<button type="submit" class="btn btn-outline-info"><h1>Submit</h1></button>
+<button type="submit" id="submit" class="btn btn-outline-info"><h1>Submit</h1></button>
 </form>
 </div>
 
@@ -65,6 +65,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $(document).ready(function()
 {	
 	var numberOfTeams = $("#numberOfTeams").val();
+
+	//before refresh save entered team names is session and display already saved values
+	$(window).bind('beforeunload', function(){
+		numberOfTeams = $("#numberOfTeams").val();
+		for(var j = 1; j <= numberOfTeams; j++){
+			if(typeof($("input[name='team"+ j +"']").val()) != "undefined" && typeof($.session.get("team" + j)) == "undefined"){
+				$.session.set("team" + j, $("#team" + j).val());
+			} else if(typeof($.session.get("team" + j)) != "undefined" && $.session.get("team" + j) != null){
+				if($("#teamsNames").is(':checked')){
+					$("#team" + j).val($.session.get("team" + j));
+					}
+				}
+		}
+	});
 	//checks if teamsNames checkbox changes
 	$("#teamsNames").change(function()
 	{   //set chosen number of teams
@@ -116,6 +130,16 @@ $(document).ready(function()
 		} else {
 			//if checkbox is unticked, then delete all children of insertteamname's div
 			$("#insertteamname").empty();
+		}
+	});
+
+	//before form is submitted, save team names in session
+	$("#submit").submit(function(){
+		numberOfTeams = $("#numberOfTeams").val();
+		for(var j = 1; j <= numberOfTeams; j++){
+			if(typeof($("input[name='team"+ j +"']").val()) != "undefined"){
+				$.session.set("team" + j, $("#team" + j).val());
+			} 
 		}
 	});
 });
