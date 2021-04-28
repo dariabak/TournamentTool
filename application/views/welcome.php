@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <label for='typeOfSchedule'>Choose type of schedule</label>
 <select id='typeOfSchedule' name='typeOfSchedule' class="custom-select">
 	<option value='tournamentSingleElimination'>Tournament Single Elimination</option>
-	<option value='leagueRoundRobin'>Tournament Round Robin test</option>
+	<option value='leagueRoundRobin'>Tournament Round Robin</option>
 	<option value='tournamentDoubleElimination'>Tournament Double Elimination</option>
 </select>
 <label for='teamsNames'>Do you want enter teams names?</label>
