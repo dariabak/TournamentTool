@@ -24,21 +24,8 @@ class Schedule_Model extends CI_Model{
             case 'leagueRoundRobin':
                 $numberOfTeams = count($teams);
                 $groups = array();
-                if($numberOfTeams % 6 == 0){
-                    $numberOfGroups = $numberOfTeams / 6;
-                    for($i = 0; $i < $numberOfGroups; $i++){
-                        $group = new Group();
-                        $random_teams = array_rand($teams,6);
-                        $group->set_teams($teams, $random_teams);
-                        $group->set_groupId($i+1);
-                        $y = count($random_teams);
-                        for($j = 0; $j < $y; $j++){
-                            unset($teams[$random_teams[$j]]);
-                        }
-                        array_push($groups, $group);
-                       
-                    }
-                } else if($numberOfTeams % 5 == 0){
+              
+                if($numberOfTeams % 5 == 0){
                     $numberOfGroups = $numberOfTeams / 5;
                     for($i = 0; $i < $numberOfGroups; $i++){
                         $group = new Group();
@@ -87,10 +74,8 @@ class Schedule_Model extends CI_Model{
                     }
 
                 }
-              
                 $matchesData['groups'] = $groups;
                 $id = 1;
-
                 foreach($groups as $group){
                     $teamsInGroup = $group->get_teams();
                     $group->set_groupId($id);
